@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Eesha Noor - Selenium Automation Suite" verbose="1" parallel="methods" thread-count="3">
+    <parameter name="browser" value="chrome"/>
+    <test name="Login Tests">
+        <classes>
+            <class name="com.eeshanoor.tests.LoginTest"/>
+        </classes>
+    </test>
+    <test name="Inventory Tests">
+        <classes>
+            <class name="com.eeshanoor.tests.InventoryTest"/>
+        </classes>
+    </test>
+</suite>
