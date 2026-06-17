@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  selenium-hub:
+    image: selenium/hub:4.18.1
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+
+  chrome:
+    image: selenium/node-chrome:4.18.1
+    shm_size: '2gb'
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=3
+
+  firefox:
+    image: selenium/node-firefox:4.18.1
+    shm_size: '2gb'
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=3
+
+  tests:
+    image: maven:3.9-eclipse-temurin-11
+    depends_on:
+      - chrome
+      - firefox
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: mvn clean test -Dremote=true -DgridUrl=http://selenium-hub:4444/wd/hub
